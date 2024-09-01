@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Bingo goals for Boring Man</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+        }
+
+        a {
+            color: green;
+            font-weight: bold;
+        }
+
+        span {
+            font-style: italic;
+        }
+
+        #goals {
+            width: 40%;
+        }
+
+        #how-to-use {
+            width: 60%;
+        }
+
+        #goals-json {
+            height: 150px;
+            width: 80%;
+        }
+
+        #help-create-board {
+            padding: 5px;
+            max-width: 400px;
+            max-height: 250px;
+        }
+
+        .container-flex-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .container-flex-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .missing-goals {
+            font-style: italic;
+        }
+
+        .no-marg-pad {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .width-two-third {
+            width: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bingo goals for <a target="_blank"
+            href="https://store.steampowered.com/app/346120/Boring_Man__Online_Tactical_Stickman_Combat/">Boring Man</a>
+    </h1>
+    <p class="no-marg-pad">All the bingo goals can be found <a target="_blank"
+            href="https://docs.google.com/spreadsheets/d/1rleWHOfCbsnoaIPbUkc0J9tsVfTFMpWbABXHRLrhPJE/edit?usp=sharing">here.</a>
+    </p>
+    <div class="container-flex-row">
+        <div id="goals" class="container-flex-col">
+            <section>
+                <h2>Random list of goals</h2>
+                <span class="missing-goals">If no goal is generated, please refresh the page.</span>
+                <ol id="goals-list"></ol>
+            </section>
+            <section>
+                <h2>Goals in JSON format</h2>
+                <textarea id="goals-json"></textarea>
+            </section>
+            <div>
+
+            </div>
+        </div>
+        <div id="how-to-use">
+            <h2>How to use goals in <a target="_blank" href="https://bingosync.com">Bingosync</a></h2>
+            <section>
+                <h3>Goals</h3>
+                <p>
+                    On the left of this page, you can find goals that are generated randomly every 3 seconds.
+                    As long as your focus is on the page, they are automatically copied to your clipboard in a JSON
+                    format. Those goals can be used to create a card in Bingosync.
+                </p>
+            </section>
+            <section>
+                <h2>Check for focus</h2>
+                <p id="is-page-focused"></p>
+            </section>
+            <section>
+                <h3>Create a new board</h3>
+                <div class="container-flex-row">
+                    <div class="width-two-third">
+                        <section>
+                            <h4>When creating a new room</h4>
+                            <ol>
+                                <li>Open <a target="_blank" href="https://bingosync.com">Bingosync</a>.</li>
+                                <li>When creating a new room, choose "<span>Custom (Advanced)</span>" for
+                                    "<span>Game</span>".
+                                </li>
+                                <li>Paste the goals JSON into "<span>Board</span>".</li>
+                                <li>Click on "<span>Make Room</span>".</li>
+                            </ol>
+                        </section>
+                        <section>
+                            <h4>When inside a room</h4>
+                            <ol>
+                                <li>Click on "<span>New Card</span>".</li>
+                                <li>Follow steps 2 and 3 described in the "<span>When creating a new room</span>"
+                                    section.</li>
+                                <li>Click on "<span>Generate Card</span>".</li>
+                            </ol>
+                        </section>
+                    </div>
+                    <img id="help-create-board" src="imgs/create_board.png" />
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="utils.js"></script>
+<script src="goals/weapons.js"></script>
+<script src="goals/bosses.js"></script>
+<script>
+    // List of all goals outside of weapons & bosses goals.
+    const GOALS = [{ "name": "Boring Campaign" }, { "name": "Boring Campaign (pacific run)" }, { "name": "Boring Campaign (killer run)" }, { "name": "Skate Climb: Remake!" }, { "name": "Fields Climb: Remake!" }, { "name": "Key Climb: Remake!" }, { "name": "Pyramid Climb: Remake!" }, { "name": "Death by Helicopter (survivor)" }, { "name": "Death by Helicopter (zombie)" }, { "name": "Death by your own sniper/bolt" }, { "name": "Death by your own musket" }, { "name": "All hazard deaths" }, { "name": "Boring Kill" }, { "name": "Boring Kill (survival)" }, { "name": "Boring Kill (zombrains)" }, { "name": "Max out angriness of the barman" }, { "name": "Max out happiness of the barman" }, { "name": "Economy crash" }, { "name": "Start and finish a mission while the bar is open" }, { "name": "Finish a mission where a vice is the reward" }, { "name": "Finish a mission of each type" }, { "name": "Win a bet" }, { "name": "Defuse a bomb" }, { "name": "Finish a wave with less than 5% on flag" }, { "name": "Finish a wave with more than 95% on flag" }, { "name": "Let a vice disappear" }, { "name": "Get a vice" }, { "name": "Get all normal vices" }, { "name": "Get a super vice" }, { "name": "Stack 3 hot wings" }, { "name": "Buy 99 shares" }, { "name": "Sell a share for 10 times its price" }, { "name": "Buy all chests of 1 wave" }, { "name": "Kill a boss" }, { "name": "Survive 5 minutes of zombie horde" }, { "name": "Survive 5 minutes of zombie horde (Warehouse)" }, { "name": "Survive 5 minutes of zombie horde (Muleslapper)" }, { "name": "Stand on the spikes left/right pixel" }, { "name": "Stand on the spikes left/right pixel without jetpack" }, { "name": "Finish the tutorial" }, { "name": "Finish the tutorial (fists only)" }, { "name": "Pineapple kill" }, { "name": "Kill a shark" }, { "name": "Destroy all barrels on all official maps" }, { "name": "Win a weapon deal game against 10 hard bots (Muleslapper)" }, { "name": "Shooting range with a random loadout (5 rerolls max)" }, { "name": "3000$ in a game of ZMB" }, { "name": "Get a secret flash text" }, { "name": "Win a game of Boring Royale" }];
+
+    // Variables related to document starts with `doc_`.
+    const doc_goalsList = document.getElementById("goals-list");
+    const doc_goalsJSON = document.getElementById("goals-json");
+    const doc_help = document.getElementById("how-to-use");
+    const doc_page_focused = document.getElementById("is-page-focused");
+
+    // Generate and return 25 random goals.
+    function random25Goals(goals) {
+        const wpGoals = getRandomWeaponsGoals();
+        const bossesGoals = getRandomBossesGoals();
+        const nbGoalsLeft = 25 - wpGoals.length - bossesGoals.length;
+
+        let _goals = [...goals];
+        let result = [...wpGoals, ...bossesGoals];
+
+        for (let i = 0; i < nbGoalsLeft; i++) {
+            const rndIndex = getRandomNumber(0, _goals.length - 1);
+            const goal = _goals[rndIndex];
+            result = [...result, goal];
+
+            // remove the goal to avoid duplicates
+            _goals.splice(rndIndex, 1);
+        }
+        return result;
+    }
+
+    // Copy the given text into the clipboard and set the textarea to that text.
+    function copy(text) {
+        doc_goalsJSON.value = text;
+        doc_goalsJSON.select();
+        doc_goalsJSON.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+    }
+
+    // Copy the given json object.
+    function copyJSON(json) {
+        const text = JSONToString(json);
+        copy(text);
+    }
+
+    // Generate the list of goals based on a json object.
+    function jsonIntoBody(json) {
+        doc_goalsList.innerHTML = "";
+        for (let element of json) {
+            const text = `<li> ${element["name"]} </li>`;
+            doc_goalsList.innerHTML = `${doc_goalsList.innerHTML} ${text}`;
+        }
+    }
+
+    // Generate the goals for bingo and randomize the resulting list.
+    function generateGoals(goals) {
+        const rndGoals = random25Goals(goals);
+        const currGoals = shuffleArray(rndGoals);
+        return currGoals;
+    }
+
+    // Replace the goals in document by the given ones.
+    function replaceGoalsInDocument(goals) {
+        copyJSON(goals);
+        jsonIntoBody(goals);
+    }
+
+    function checkPageFocus() {
+        if (document.hasFocus()) {
+            doc_page_focused.textContent = "Goals will be automatically copied. ✅"
+        }
+        else {
+            doc_page_focused.textContent = "Click on the page to have goals automatically copied. ❌"
+        }
+    }
+
+    // First goals generated.
+    replaceGoalsInDocument(generateGoals(GOALS));
+
+    // Every 3 seconds, generate new bingo goals.
+    setInterval(() => {
+        replaceGoalsInDocument(generateGoals(GOALS));
+    }, 3000)
+
+    // Check page focus
+    setInterval(checkPageFocus, 500);
+</script>
+
+</html>
